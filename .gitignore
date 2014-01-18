@@ -1,0 +1,13 @@
+data/
+data_utf/
+img/
+sqlite/
+sqlite_test/
+.ipynb_checkpoints/
+
+*.pyc
+.DS_Store
+.gitignore~
+*~
+
+.lprof
