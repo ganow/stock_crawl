@@ -13,6 +13,7 @@ TOPIX以外の企業数: 15
 
 """
 
+
 def main():
     e = Experiment()
     e.run(15, 15, save_dir=os.path.join(BASE_DIR, 'img/experiment_002/'))

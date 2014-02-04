@@ -4,15 +4,12 @@
 import numpy as np
 
 from bayes_regression import Regressor
-import datetime
 from datetime import date
 
 from model import (
     init,
     Brand,
-    MarketType,
     IndustoryType,
-    DayChart,
 )
 from model import database_proxy as db
 
@@ -59,9 +56,9 @@ class Experiment(object):
     def setup(self):
         print u"実験のセットアップを開始します。"
         init(
-            MODE = 'MYSQL',
-            DROP_DB = False,
-            CREATE_DB = False
+            MODE='MYSQL',
+            DROP_DB=False,
+            CREATE_DB=False
         )
         db.connect()
 
@@ -73,7 +70,9 @@ class Experiment(object):
         self.master_brands = Brand.select().join(IndustoryType).where(expression)
 
     def run(self, company_num, t_step, save_dir=None, exclude_TOPIX=False):
-        self.brand_list = np.hstack(( [Brand.get(Brand.name == 'TOPIX')], np.random.choice(self.master_brands[0:], company_num) ))
+        self.brand_list = np.hstack((
+            [Brand.get(Brand.name == 'TOPIX')],
+            np.random.choice(self.master_brands[0:], company_num) ))
         if exclude_TOPIX:
             self.brand_list = self.brand_list[1:]
 

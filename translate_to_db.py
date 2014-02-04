@@ -36,55 +36,60 @@ def parse_raw_text(raw_text):
         'sales_value': None if tmp[9] == '-' else float(tmp[9])
     }
 
+
 def get_market(data):
     try:
         market = MarketType.get(MarketType.type_name == data['market_name'])
     except Exception, e:
         market = MarketType(
-            type_name = data['market_name']
+            type_name=data['market_name']
         )
         market.save()
     finally:
         return market
+
 
 def get_industory(data):
     try:
         industory = IndustoryType.get(IndustoryType.type_name == data['industory_name'])
     except Exception, e:
         industory = IndustoryType(
-            type_name = data['industory_name']
+            type_name=data['industory_name']
         )
         industory.save()
     finally:
         return industory
+
 
 def get_brand(data):
     try:
         brand = Brand.get(Brand.name == data['brand_name'])
     except Exception, e:
         brand = Brand(
-            code = data['code'],
-            name = data['brand_name'],
-            market = get_market(data),
-            industory = get_industory(data)
+            code=data['code'],
+            name=data['brand_name'],
+            market=get_market(data),
+            industory=get_industory(data)
         )
         brand.save()
     finally:
         return brand
 
+
 def store_day_chart(date, data):
     dc = DayChart(
-        brand = get_brand(data),
-        start_value = data['start_value'],
-        max_value = data['max_value'],
-        min_value = data['min_value'],
-        end_value = data['end_value'],
-        turnover = data['turnover'],
-        sales_value = data['sales_value'],
-        date = date,
+        brand=get_brand(data),
+        start_value=data['start_value'],
+        max_value=data['max_value'],
+        min_value=data['min_value'],
+        end_value=data['end_value'],
+        turnover=data['turnover'],
+        sales_value=data['sales_value'],
+        date=date,
     )
     dc.save()
     return dc
+
 
 def file_to_db(fname, date):
     with open(fname, 'r') as f:
@@ -95,14 +100,16 @@ def file_to_db(fname, date):
 
     db.commit()
 
+
 def set_up():
     init(
-        MODE = 'MYSQL',
-        DROP_DB = False,
-        CREATE_DB = False
+        MODE='MYSQL',
+        DROP_DB=False,
+        CREATE_DB=False
     )
     db.connect()
     db.set_autocommit(False)
+
 
 # @profile
 def main(start_day, end_day):
@@ -131,4 +138,3 @@ if __name__ == '__main__':
 
     set_up()
     main()
-

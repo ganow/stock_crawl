@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import datetime, os, time
+import datetime
+import os
+import time
 
 dirs = ['./data/', './data_utf/']
 # dirs = ['./tmp/']

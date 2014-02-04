@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import time, os
+import time
+import os
 import datetime
 
 import urllib2
@@ -15,6 +16,7 @@ one_day = datetime.timedelta(1)
 base_url = 'http://k-db.com/site/download.aspx?p=all&download=csv&date='
 
 data_dir = './data/'
+
 
 def main(start_day, end_day):
     d = start_day

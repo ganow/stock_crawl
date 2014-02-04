@@ -1,25 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy as np
-import datetime
-
-from scipy.interpolate import UnivariateSpline
-
 from model import (
     init,
-    Brand,
-    MarketType,
-    IndustoryType,
     DayChart,
 )
 from model import database_proxy as db
 
+
 def main():
     init(
-        MODE = 'MYSQL',
-        DROP_DB = False,
-        CREATE_DB = False
+        MODE='MYSQL',
+        DROP_DB=False,
+        CREATE_DB=False
     )
     db.connect()
     db.set_autocommit(False)

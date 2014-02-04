@@ -10,6 +10,7 @@ import crawl
 import translate_to_utf
 import translate_to_db
 
+
 def main(start_day, end_day):
     print u"%s から %s までのデータのクロールを開始します。" % ( start_day.strftime('%Y-%m-%d'), end_day.strftime('%Y-%m-%d') )
     crawl.main(date(2010, 3, 27), date(2010, 3, 27))

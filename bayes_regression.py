@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-import numpy as np
 import matplotlib.pylab as pl
 import matplotlib.dates as dates
-from scipy import stats
 
 import datetime
 from datetime import date
@@ -22,6 +20,7 @@ pl.rc('font', **font)
 
 one_day = datetime.timedelta(1)
 
+
 def plot_value(brand, attr, start_day=date(2013,1,1), end_day=date(2014,1,1)):
     data = get_brands_value_list(brand, attr, start_day, end_day)
 
@@ -35,16 +34,19 @@ def plot_value(brand, attr, start_day=date(2013,1,1), end_day=date(2014,1,1)):
     pl.ylabel(attr)
     pl.show()
 
+
 def compute_sqerr(lhs, rhs):
     sqerr = ( lhs - rhs ) ** 2
     sqerrsum = sqerr.sum()
     return sqerr, sqerrsum
+
 
 def save_or_show(fname, pl, save_dir):
     if save_dir:
         pl.savefig(os.path.join(save_dir, fname))
     else:
         pl.show()
+
 
 class Regressor(object):
     def __init__(self, target, competitors, start_day, end_day, t_step, attr='max_value'):
@@ -61,8 +63,8 @@ class Regressor(object):
         self.ols = LinearRegression()
 
     def get_data(self, start_day=None, end_day=None, update_self=False):
-        if not start_day: start_day = self.start_day
-        if not end_day: end_day = self.end_day
+        start_day = self.start_day if not start_day else start_day
+        end_day = self.end_day if not end_day else end_day
 
         X, y, competitors = get_data(
             self.target,
@@ -151,9 +153,9 @@ class Regressor(object):
         pl.plot(test_days, predicted_by_linear, 'r--', lw=2, label="Predicted by Linear")
 
         ax = pl.gca()
-        ax.xaxis.set_major_locator(dates.DayLocator(interval=60)) #主目盛を日単位で60日間隔で表示
-        ax.xaxis.set_minor_locator(dates.DayLocator(interval=30)) #補助目盛を日単位で30日間隔で表示
-        ax.xaxis.set_major_formatter(dates.DateFormatter('%d%b\n%Y')) #主目盛のラベルの表示形式を指定
+        ax.xaxis.set_major_locator(dates.DayLocator(interval=60)) # 主目盛を日単位で60日間隔で表示
+        ax.xaxis.set_minor_locator(dates.DayLocator(interval=30)) # 補助目盛を日単位で30日間隔で表示
+        ax.xaxis.set_major_formatter(dates.DateFormatter('%d%b\n%Y')) # 主目盛のラベルの表示形式を指定
 
         pl.ylabel(self.attr)
         pl.legend(loc='best', prop=dict(size=12))
@@ -171,12 +173,11 @@ class Regressor(object):
         pl.plot(test_days, self.linear_sqerr, 'r-', lw=2, label="Linear(Sum:%0.2f)" % self.linear_sqerrsum)
 
         ax = pl.gca()
-        ax.xaxis.set_major_locator(dates.DayLocator(interval=60)) #主目盛を日単位で60日間隔で表示
-        ax.xaxis.set_minor_locator(dates.DayLocator(interval=30)) #補助目盛を日単位で30日間隔で表示
-        ax.xaxis.set_major_formatter(dates.DateFormatter('%d%b\n%Y')) #主目盛のラベルの表示形式を指定
+        ax.xaxis.set_major_locator(dates.DayLocator(interval=60)) # 主目盛を日単位で60日間隔で表示
+        ax.xaxis.set_minor_locator(dates.DayLocator(interval=30)) # 補助目盛を日単位で30日間隔で表示
+        ax.xaxis.set_major_formatter(dates.DateFormatter('%d%b\n%Y')) # 主目盛のラベルの表示形式を指定
 
         pl.ylabel("Squared Error")
         pl.legend(loc='best', prop=dict(size=12))
 
         save_or_show('sqerr.pdf', pl, save_dir)
-

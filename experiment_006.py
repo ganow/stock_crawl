@@ -15,6 +15,7 @@ TOPIX以外の企業数: 2
 
 """
 
+
 def main():
     e = Experiment()
     e.run(2, 30, save_dir=os.path.join(BASE_DIR, 'img/experiment_006/'), exclude_TOPIX=True)

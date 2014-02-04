@@ -7,12 +7,10 @@ import datetime
 from scipy.interpolate import UnivariateSpline
 
 from model import (
-    init,
     Brand,
-    MarketType,
-    IndustoryType,
     DayChart,
 )
+
 
 def get_data(target, competitors, start_day, end_day, t_step=1, attr='max_value', verbose=False):
     """
@@ -62,6 +60,7 @@ def get_data(target, competitors, start_day, end_day, t_step=1, attr='max_value'
 
     return X.T, y, used_competitors
 
+
 def get_value_matrix(brand_data, t_step):
     """
     一社に対して，考慮する期数 x (期間-考慮する期数)
@@ -69,6 +68,7 @@ def get_value_matrix(brand_data, t_step):
     size = brand_data.size
     idx_matrix = get_idx_matrix(t_step, size-t_step)
     return brand_data[idx_matrix]
+
 
 def get_idx_matrix(t, n):
     """
@@ -82,6 +82,7 @@ def get_idx_matrix(t, n):
     t_iter_matrix = np.repeat( np.arange(t).reshape(t,1), n, axis=1 )
     n_iter_matrix = np.repeat( np.arange(n).reshape(1,n), t, axis=0 )
     return t_iter_matrix + n_iter_matrix
+
 
 def get_brands_value_list(brand, attr, start_day, end_day):
     """
@@ -99,14 +100,15 @@ def get_brands_value_list(brand, attr, start_day, end_day):
         raise e
     return f(idx_array)
 
+
 def get_brands_raw_value_list(brand, attr, start_day, end_day):
     """
     欠損を補完しないデータの取得
     """
 
     data = DayChart.select().join(Brand).where(
-                (Brand.id == brand.id) &
-                (DayChart.date.between(start_day, end_day)) )
+        (Brand.id == brand.id) &
+        (DayChart.date.between(start_day, end_day)) )
 
     output = np.zeros( (end_day-start_day).days + 1 )
 
@@ -116,7 +118,7 @@ def get_brands_raw_value_list(brand, attr, start_day, end_day):
     while d != end_day + one_day:
         try:
             tmp = data.where(DayChart.date == d).get().__getattribute__(attr)
-            assert tmp != None, "missing value"
+            assert tmp is not None, "missing value"
             output[i] = tmp
         except Exception, e:
             output[i] = -1
